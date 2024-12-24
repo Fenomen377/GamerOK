@@ -9,7 +9,7 @@ class TableBase(BaseModel):
 
 
 class TableCreate(TableBase):
-    pass
+    zone_id: int
 
 
 class TableUpdate(TableBase):
@@ -24,3 +24,4 @@ class TableInfo(TableBase):
 
     class Config:
         orm_mode = True
+        from_attributes = True

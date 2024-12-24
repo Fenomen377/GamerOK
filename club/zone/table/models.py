@@ -15,5 +15,6 @@ class Table(Base):
     zone_id = Column(Integer, ForeignKey('zones.id'))
 
     zone = relationship("Zone", back_populates="tables")
+    bookings = relationship("Booking", back_populates="table")
 
 
