@@ -5,12 +5,14 @@ from database import Base
 
 
 class Zone(Base):
-    __tablename__ = 'zones'
+    __tablename__ = "zones"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    club_id = Column(Integer, ForeignKey('clubs.id'))
+    club_id = Column(Integer, ForeignKey("clubs.id"))
+    hourly_rate = Column(Integer, nullable=False)
 
-    club = relationship("Club", back_populates="zones")
+    club = relationship("Club", back_populates="zone")
     tables = relationship("Table", back_populates="zone")
+    bookings = relationship("Booking", back_populates="zone")
 
