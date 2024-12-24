@@ -10,6 +10,8 @@ from config import settings
 from club.models import Club
 from club.zone.models import Zone
 from club.zone.table.models import Table
+from users.models import Users
+from bookings.models import Booking
 
 config = context.config
 
