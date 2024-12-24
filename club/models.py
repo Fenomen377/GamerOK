@@ -12,5 +12,8 @@ class Club(Base):
     address = Column(String, nullable=False)
     description = Column(String, nullable=False)
 
-    zones = relationship("Zone", back_populates="club")
+    zone = relationship("Zone", back_populates="club")
+
+
+
 
