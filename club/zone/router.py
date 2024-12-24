@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
-from schemas import ZoneCreate, ZoneInfo
-from dao import ZoneDAO
+from .schemas import ZoneCreate, ZoneInfo
+from .dao import ZoneDAO
 
 router_zone = APIRouter(prefix="/zones", tags=["Зоны"])
 

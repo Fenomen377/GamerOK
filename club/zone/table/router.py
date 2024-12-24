@@ -2,8 +2,8 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 
 from database import async_session_maker
-from schemas import TableCreate, TableInfo
-from dao import TableDAO
+from .schemas import TableCreate, TableInfo
+from .dao import TableDAO
 
 router_table = APIRouter(prefix="/tables", tags=["Столы"])
 

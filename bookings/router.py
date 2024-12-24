@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 
 from users.models import Users
-from schemas import BookingCreate, BookingUpdate, BookingInfo
+from .schemas import BookingCreate, BookingUpdate, BookingInfo
 from bookings.dao import BookingDAO
 from users.dependencies import get_current_user
 
