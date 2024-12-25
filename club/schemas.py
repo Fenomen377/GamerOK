@@ -5,7 +5,7 @@ from typing import Optional
 class ClubBase(BaseModel):
     name: str
     address: str
-
+    description: str
 
 class ClubCreate(ClubBase):
     pass

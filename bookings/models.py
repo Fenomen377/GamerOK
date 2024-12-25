@@ -18,8 +18,8 @@ class Booking(Base):
     datetime_from = Column(DateTime, nullable=False)
     datetime_to = Column(DateTime, nullable=False)
     hourly_rate = Column(Integer, nullable=False)
-    total_cost = Column(Integer, Computed("EXTRACT(EPOCH FROM (datetime_to - datetime_from)) / 3600 * hourly_rate"))
-    total_hours = Column(Integer, Computed("EXTRACT(EPOCH FROM (datetime_to - datetime_from)) / 3600"))
+    total_cost = Column(Integer, Computed("(datetime_to - datetime_from) / 3600 * hourly_rate", persisted=True))
+    total_hours = Column(Integer, Computed("(datetime_to - datetime_from) / 3600", persisted=True))
 
     user = relationship("Users", back_populates="booking")
     table = relationship("Table", back_populates="bookings")

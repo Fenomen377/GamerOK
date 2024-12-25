@@ -1,5 +1,7 @@
 from typing import Optional
-from sqlalchemy import select, update
+
+from fastapi import HTTPException
+from sqlalchemy import select, update, delete
 
 from club.zone.dao import ZoneDAO
 from database import async_session_maker
@@ -20,14 +22,10 @@ class BookingDAO(BaseDAO):
         if booking_data_dict["datetime_to"].tzinfo:
             booking_data_dict["datetime_to"] = booking_data_dict["datetime_to"].replace(tzinfo=None)
         zone = await ZoneDAO.find_one_or_none(id=booking_data_dict["zone_id"])
-        if zone:
-            hourly_rate = zone.hourly_rate
-        else:
-            raise ValueError("Invalid zone")
-        duration = (booking_data_dict["datetime_to"] - booking_data_dict["datetime_from"]).total_seconds() / 3600
-        total_cost = hourly_rate * duration
+        if not zone:
+            raise HTTPException(status_code=404, detail="Zone not found")
+        hourly_rate = zone.hourly_rate
         booking_data_dict["hourly_rate"] = hourly_rate
-        booking_data_dict["total_cost"] = total_cost
         await cls.add(**booking_data_dict)
         return await cls.find_one_or_none(
             table_id=booking_data_dict["table_id"],
@@ -36,14 +34,13 @@ class BookingDAO(BaseDAO):
             datetime_to=booking_data_dict["datetime_to"],
         )
 
-
     @classmethod
     async def update(cls, booking_id: int, booking_data: BookingUpdate, user_id: int) -> Optional[Booking]:
         async with async_session_maker() as session:
-            if booking_data.datetime_from.tzinfo:
-                booking_data.datetime_from = booking_data.datetime_from.replace(tzinfo=None)
-            if booking_data.datetime_to.tzinfo:
-                booking_data.datetime_to = booking_data.datetime_to.replace(tzinfo=None)
+            if booking_data.datetime_from and booking_data.datetime_from.tzinfo:
+                booking_data = booking_data.copy(update={"datetime_from": booking_data.datetime_from.replace(tzinfo=None)})
+            if booking_data.datetime_to and booking_data.datetime_to.tzinfo:
+                booking_data = booking_data.copy(update={"datetime_to": booking_data.datetime_to.replace(tzinfo=None)})
             query = (
                 update(cls.model)
                 .where(cls.model.id == booking_id, cls.model.user_id == user_id)
@@ -58,10 +55,8 @@ class BookingDAO(BaseDAO):
     @classmethod
     async def delete(cls, booking_id: int, user_id: int) -> bool:
         async with async_session_maker() as session:
-            booking = await cls.find_one_or_none(id=booking_id, user_id=user_id)
-            if not booking:
-                return False
-            await session.delete(booking)
+            query = delete(cls.model).where(cls.model.id == booking_id, cls.model.user_id == user_id)
+            result = await session.execute(query)
             await session.commit()
-            return True
+            return result.rowcount > 0
 

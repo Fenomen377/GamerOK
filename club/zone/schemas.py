@@ -4,7 +4,9 @@ from typing import Optional
 
 class ZoneBase(BaseModel):
     name: str
-    description: Optional[str]
+    club_id: int
+    hourly_rate: int
+
 
 
 class ZoneCreate(ZoneBase):
@@ -12,9 +14,7 @@ class ZoneCreate(ZoneBase):
 
 
 class ZoneUpdate(ZoneBase):
-    name: Optional[str]
-    description: Optional[str]
-
+    pass
 
 class ZoneInfo(ZoneBase):
     id: int

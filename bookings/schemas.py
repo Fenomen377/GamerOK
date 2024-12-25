@@ -11,7 +11,8 @@ class BookingBase(BaseModel):
 
 
 class BookingCreate(BookingBase):
-    hourly_rate: int = Field(..., gt=0, description="Цена аренды за час не может быть меньше нуля")
+    pass
+    # hourly_rate: int = Field(..., gt=0, description="Цена аренды за час не может быть меньше нуля")
 
 
 class BookingUpdate(BaseModel):
