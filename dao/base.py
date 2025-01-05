@@ -7,7 +7,10 @@ from database import Base, async_session_maker
 
 
 class BaseDAO:
-    model = None
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    model: None
 
     @classmethod
     async def find_one_or_none(cls, **filter_by):
