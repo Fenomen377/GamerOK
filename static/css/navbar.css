@@ -1,0 +1,79 @@
+/* navbar.css */
+
+/* Основные стили для навигации */
+nav {
+    background-color: #333;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f2b32f;
+}
+
+nav .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav .nav-links a {
+    color: #f2b32f;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav .nav-links a:hover {
+    color: #ff9800;
+}
+
+/* Блок с пользователем и кнопкой выхода */
+nav .user-info {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+nav .username {
+    color: #f2b32f;
+    font-weight: bold;
+}
+
+nav .logout-btn {
+    background-color: #f2b32f;
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+nav .logout-btn:hover {
+    background-color: #ff9800;
+}
+
+/* Кнопки для аутентификации */
+nav .auth-links a {
+    background-color: #f2b32f;
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+nav .auth-links a:hover {
+    background-color: #ff9800;
+}
+
+nav .auth-links {
+    display: flex;
+    gap: 15px;
+}
