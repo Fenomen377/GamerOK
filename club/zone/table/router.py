@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 
-from database import async_session_maker
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from database import async_session_maker, get_db_session
 from .schemas import TableCreate, TableInfo
 from .dao import TableDAO
 
@@ -43,3 +45,12 @@ async def delete_table(table_id: int):
         await session.delete(table)
         await session.commit()
     return {"detail": "Table deleted"}
+
+
+@router_table.get("/zones/{zone_id}/tables", response_model=List[TableInfo])
+async def get_tables_by_club(zone_id: int, session: AsyncSession = Depends(get_db_session)):
+    dao = TableDAO(session)
+    tables = await dao.find_by_zone_id(zone_id)
+    if not tables:
+        raise HTTPException(status_code=404, detail="Столы для этой зоны не найдены")
+    return tables
