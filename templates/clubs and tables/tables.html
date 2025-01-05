@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Столы{% endblock %}
+
+{% block content %}
+<h1>Список столов</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Характеристики</th>
+            <th>Стоимость (руб./час)</th>
+            <th>Доступность</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for table in tables %}
+        <tr>
+            <td>{{ table.name }}</td>
+            <td>{{ table.specifications }}</td>
+            <td>{{ table.hourly_rate }}</td>
+            <td>{{ "Доступен" if table.is_available else "Занят" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

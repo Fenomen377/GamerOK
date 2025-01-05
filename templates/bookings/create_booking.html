@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Создать бронь{% endblock %}
+
+{% block content %}
+<div class="booking-container">
+    <h1>Создать бронь</h1>
+    <form id="booking-form" method="POST" action="/bookings/" class="booking-form">
+
+        <div class="form-group">
+            <label for="club">Выберите клуб:</label>
+            <select id="club" name="club" required onchange="fetchZones()">
+                <option value="">Выберите клуб</option>
+                {% for club in clubs %}
+                    <option value="{{ club.id }}">{{ club.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="zone">Выберите зону:</label>
+            <select id="zone" name="zone" required disabled onchange="fetchTables()">
+                <option value="">Выберите зону</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="table">Выберите стол(ы):</label>
+            <select id="table" name="table" multiple required disabled>
+                <option value="">Выберите стол</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="start_time">Начало бронирования:</label>
+            <input type="datetime-local" id="start_time" name="start_time" required>
+        </div>
+
+        <div class="form-group">
+            <label for="end_time">Окончание бронирования:</label>
+            <input type="datetime-local" id="end_time" name="end_time" required>
+        </div>
+
+        <button type="submit" class="btn">Забронировать</button>
+    </form>
+</div>
+
+<script>
+    async function fetchZones() {
+        const clubId = document.getElementById("club").value;
+        const zoneSelect = document.getElementById("zone");
+        zoneSelect.disabled = true;
+        document.getElementById("table").disabled = true;
+
+        if (!clubId) return;
+
+        try {
+            const response = await fetch(`/zones/clubs/${clubId}/zones`);
+            if (response.ok) {
+                const zones = await response.json();
+                zoneSelect.innerHTML = '<option value="">Выберите зону</option>';
+                zones.forEach(zone => {
+                    const option = document.createElement("option");
+                    option.value = zone.id;
+                    option.textContent = zone.name;
+                    zoneSelect.appendChild(option);
+                });
+                zoneSelect.disabled = false;
+            }
+        } catch (error) {
+            console.error("Ошибка загрузки зон:", error);
+        }
+    }
+
+
+    async function fetchTables() {
+        const zoneId = document.getElementById("zone").value;
+        const tableSelect = document.getElementById("table");
+        tableSelect.disabled = true;
+
+        if (!zoneId) return;
+
+        try {
+            const response = await fetch(`/tables/zones/${zoneId}/tables`);
+            if (response.ok) {
+                const tables = await response.json();
+                tableSelect.innerHTML = '<option value="">Выберите стол</option>';
+                tables.forEach(table => {
+                    const option = document.createElement("option");
+                    option.value = table.id;
+                    option.textContent = `${table.name}`;
+                    tableSelect.appendChild(option);
+                });
+                tableSelect.disabled = false;
+            }
+        } catch (error) {
+            console.error("Ошибка загрузки столов:", error);
+        }
+    }
+</script>
+
+{% endblock %}
+
+{% block styles %}
+<style>
+    /* Основной контейнер */
+    .booking-container {
+        width: 60%;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        font-family: 'Arial', sans-serif;
+    }
+
+    /* Заголовок */
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Общие стили для формы */
+    .booking-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Стили для каждого поля формы */
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    label {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #555;
+    }
+
+    /* Стили для select и input */
+    select, input[type="datetime-local"], button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: #fafafa;
+        transition: all 0.3s ease;
+    }
+
+    select:disabled, input[type="datetime-local"]:disabled {
+        background-color: #f0f0f0;
+        cursor: not-allowed;
+    }
+
+    select:focus, input[type="datetime-local"]:focus {
+        outline: none;
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+
+    /* Стили для кнопки */
+    button {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 1.1rem;
+        padding: 15px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 2rem;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    /* Стили для состояния hover */
+    button:active {
+        background-color: #388E3C;
+    }
+
+    /* Стили для формы с multiple select */
+    select[multiple] {
+        height: 150px;
+        padding: 8px;
+    }
+
+    /* Псевдоклассы для select */
+    select option {
+        padding: 5px;
+    }
+
+    /* Отступы для элементов формы */
+    .form-group input, .form-group select {
+        font-family: 'Arial', sans-serif;
+    }
+</style>
+{% endblock %}
+

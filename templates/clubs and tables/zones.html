@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Зоны{% endblock %}
+
+{% block content %}
+<h1>Наши Зоны</h1>
+<ul>
+    {% for zone in zones %}
+    <li>
+        <h2>{{ zone.name }}</h2>
+        <p>Цена за час: {{ zone.hourly_rate }} руб.</p>
+        {% if zone.description %}
+        <p>{{ zone.description }}</p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

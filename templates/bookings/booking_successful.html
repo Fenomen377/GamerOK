@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Бронирование успешно{% endblock %}
+
+{% block content %}
+<h1>Бронирование подтверждено!</h1>
+<p>Вы успешно забронировали:</p>
+<ul>
+    <li>Зона: {{ booking.zone.name }}</li>
+    <li>Стол: {{ booking.table.name }}</li>
+    <li>Дата и время: с {{ booking.datetime_from }} до {{ booking.datetime_to }}</li>
+    <li>Стоимость: {{ booking.total_cost }} руб.</li>
+</ul>
+<a href="/bookings" class="button">Посмотреть все бронирования</a>
+<a href="/" class="button">На главную</a>
+{% endblock %}

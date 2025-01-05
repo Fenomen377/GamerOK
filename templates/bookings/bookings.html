@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Мои бронирования{% endblock %}
+
+{% block content %}
+<h1>Ваши бронирования</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Зона</th>
+            <th>Стол</th>
+            <th>Дата и время</th>
+            <th>Стоимость</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{ booking.zone.name }}</td>
+            <td>{{ booking.table.name }}</td>
+            <td>с {{ booking.datetime_from }} до {{ booking.datetime_to }}</td>
+            <td>{{ booking.total_cost }} руб.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<h1>Регистрация</h1>
+<form id="register-form" onsubmit="registerUser(event)">
+    <label for="username">Имя пользователя:</label>
+    <input type="text" id="username" name="username" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Зарегистрироваться</button>
+</form>
+<a href="/login">Уже есть аккаунт? Войти</a>
+
+<script>
+    async function registerUser(event) {
+        event.preventDefault();
+
+        const url = "http://127.0.0.1:8000/auth/register";
+;
+        const formData = {
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.status === 201) {
+                window.location.href = "/pages/";
+            } else {
+                const data = await response.json();
+                alert(data.detail || "Ошибка регистрации.");
+            }
+        } catch (err) {
+            alert("Ошибка подключения к серверу.");
+        }
+    }
+</script>
+{% endblock %}

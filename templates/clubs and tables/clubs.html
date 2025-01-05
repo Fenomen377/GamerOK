@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}О клубе{% endblock %}
+
+{% block content %}
+<h1>{{ club.name }}</h1>
+<p>Адрес: {{ club.address }}</p>
+{% if club.description %}
+<p>Описание: {{ club.description }}</p>
+{% endif %}
+{% endblock %}
